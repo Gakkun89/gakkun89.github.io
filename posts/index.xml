@@ -1,4 +1,110 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Gakked</title><link>/posts/</link><description>Recent content in Posts on Gakked</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World</title><link>/posts/hello-world/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>/posts/hello-world/</guid><description>Starting off with one of the most over-used tropes in programming to introduce another, a tech/random thoughts/brain dump blog.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Gakked</title><link>/posts/</link><description>Recent content in Posts on Gakked</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 29 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Presence in Rails</title><link>/posts/presence-in-rails/</link><pubDate>Sun, 29 May 2022 00:00:00 +0000</pubDate><guid>/posts/presence-in-rails/</guid><description>Some of the most common methods I use on a daily basis when writing if/else&amp;rsquo;s and guard clauses are &amp;lsquo;presence checkers&amp;rsquo;. It can be really helpful to know if the Array, String, object etc. has is not just &amp;rsquo;empty&amp;rsquo;/[]/false/nilas your existing logic may fail if passed such data. However Ruby (and Rails) have a number of methods to achieve this and as a junior dev I often found myself checking which to use in each specific scenario.</description><content>&lt;p>Some of the most common methods I use on a daily basis when writing &lt;code>if/else&lt;/code>&amp;rsquo;s and &lt;a href="https://devblast.com/b/what-are-guard-clauses">guard clauses&lt;/a> are &amp;lsquo;presence checkers&amp;rsquo;.
+It can be really helpful to know if the &lt;code>Array&lt;/code>, &lt;code>String&lt;/code>, &lt;code>object&lt;/code> etc. has is not just &amp;rsquo;empty&amp;rsquo;/&lt;code>[]&lt;/code>/&lt;code>false&lt;/code>/&lt;code>nil&lt;/code>as your existing logic may fail if passed such data. However Ruby (and Rails) have a number of methods to achieve this and as a junior dev I often found myself checking which to use in each specific scenario.&lt;/p>
+&lt;h2 id="nil-blank-empty-which-one-to-use">&lt;code>nil?&lt;/code> &lt;code>blank?&lt;/code> &lt;code>empty?&lt;/code> which one to use?&lt;/h2>
+&lt;p>The methods I come back to the most are &lt;code>blank?&lt;/code> and &lt;code>present?&lt;/code> (which is actualy just an alias for &lt;code>!blank?&lt;/code>) because they offer an extra layer of safety in their return:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>blank?&lt;/th>
+&lt;th>present?&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>nil&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>false&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;td>true&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;td>true&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;td>true&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;quot;&amp;quot;&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;quot; &amp;quot;&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>[]&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>[nil]&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;td>true&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>{}&lt;/td>
+&lt;td>true&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>{a: nil}&lt;/td>
+&lt;td>&lt;code>false&lt;/code>&lt;/td>
+&lt;td>true&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Either way you are guarenteed a &lt;code>true&lt;/code> or &lt;code>false&lt;/code> response and can build your logic around that boolean.
+Other methods are more restrictive:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;code>nil?&lt;/code> will only return &lt;code>true&lt;/code> when passed &lt;code>nil&lt;/code> any other value results in &lt;code>false&lt;/code> which restricts its usefulness to certain situations.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>empty?&lt;/code> can only be used on &lt;code>Enumerables&lt;/code> that is &lt;code>Hash&lt;/code>&amp;rsquo;s (&lt;code>{}&lt;/code>) and &lt;code>Array&lt;/code>&amp;rsquo;s (&lt;code>[]&lt;/code>) and &lt;code>String&lt;/code>&amp;rsquo;s (&lt;code>&amp;quot; &amp;quot;&lt;/code>), trying to use it on an &lt;code>Integer&lt;/code> will result in:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">=&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">.&lt;/span>empty?
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">NoMethodError&lt;/span>: undefined method &lt;span style="color:#e6db74">`empty?&amp;#39; for 0:Integer
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>There is even &lt;code>zero?&lt;/code> which is restricted to just &lt;code>Integers&lt;/code> and responds &lt;code>true&lt;/code> on 0 and &lt;code>false&lt;/code> on any other number.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Rails, more specifically &lt;code>ActiveRecord&lt;/code> offers &lt;code>exists?&lt;/code> which when used against an &lt;code>ActiveModel::Model&lt;/code> can be used for checking the DB for the existance of a model that matches the parameters passed:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># For a given model of &amp;#39;Dog&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(&lt;span style="color:#ae81ff">5&lt;/span>) &lt;span style="color:#75715e"># Checks for the ID of the model in the DB&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(&lt;span style="color:#e6db74">&amp;#39;5&amp;#39;&lt;/span>) &lt;span style="color:#75715e"># See above&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(&lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#e6db74">&amp;#39;name LIKE ?&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;%&lt;/span>&lt;span style="color:#e6db74">#{&lt;/span>query&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">%&amp;#34;&lt;/span>&lt;span style="color:#f92672">]&lt;/span>) &lt;span style="color:#75715e"># Specify other attributes to query for&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(name: &lt;span style="color:#e6db74">&amp;#39;Good Boy&amp;#39;&lt;/span>) &lt;span style="color:#75715e"># See above&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(id: &lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">8&lt;/span>&lt;span style="color:#f92672">]&lt;/span>) &lt;span style="color:#75715e"># Check multiple IDs at once&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists?(&lt;span style="color:#66d9ef">false&lt;/span>) &lt;span style="color:#75715e"># Return False&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>exists? &lt;span style="color:#75715e"># Checks if there are any instances of Dog in the DB&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">Dog&lt;/span>&lt;span style="color:#f92672">.&lt;/span>where(name: &lt;span style="color:#e6db74">&amp;#39;Skye&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">good_boy&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>exists? &lt;span style="color:#75715e"># More specific querying is possible&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F">Further reading on &lt;code>exists?&lt;/code>&lt;/a>&lt;/p>
+&lt;h1 id="performance-and-presence-checking">Performance and presence checking&lt;/h1>
+&lt;p>Unless you are Twitter scale it doesn&amp;rsquo;t matter.&lt;/p>
+&lt;p>Of course there are differences between using the different methods against different data types (&lt;a href="https://stackoverflow.com/a/20814251/8459243">as can be seen here in this comprehensive SO answer&lt;/a>). However for most projects these presence checks will not be a performance bottle neck.&lt;/p>
+&lt;p>One caveat to the above statement is when dealing with &lt;code>ActiveRecord&lt;/code> checks which hit the DB. The topic of performance in those queries is quite involved and is expertly handled in &lt;a href="https://www.ombulabs.com/blog/benchmark/performance/rails/present-vs-any-vs-exists.html">this post&lt;/a> which I would encourage anyone interested to read.&lt;/p>
+&lt;p>&lt;code>Thats all folks&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ruby" data-lang="ruby">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">LinkedIn&lt;/span>&lt;span style="color:#f92672">::&lt;/span>&lt;span style="color:#66d9ef">Messenger&lt;/span>&lt;span style="color:#f92672">.&lt;/span>send(&lt;span style="color:#e6db74">`Mike Warren`&lt;/span>) &lt;span style="color:#66d9ef">if&lt;/span> questions&lt;span style="color:#f92672">.&lt;/span>present?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></content></item><item><title>Hello World</title><link>/posts/hello-world/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>/posts/hello-world/</guid><description>Starting off with one of the most over-used tropes in programming to introduce another, a tech/random thoughts/brain dump blog.
 What this blog is: A place for me to write breakdowns of new topics that I encounter while working as a back-end Ruby on Rails dev An opportunity to improve my understanding of CS related topics via writing hopefully useful guides/ TIL (Today I learned) style posts A distraction from the bug tickets I am supposed to be fixing… What this blog isn&amp;rsquo;t: A comprehensive source of knowledge on any topics posted The &amp;lsquo;right&amp;rsquo; way to do things Interesting (I don&amp;rsquo;t expect anyone to read this but if one person can be helped by anything written here then that would be great) Hopefully I can share a few useful things on here and if anyone wants to get in contant please see my GH and LinkedIn linked above.</description><content>&lt;p>Starting off with one of the most over-used tropes in programming to introduce another, a tech/random thoughts/brain dump blog.&lt;/p>
 &lt;h3 id="what-this-blog-is">What this blog is:&lt;/h3>
 &lt;ul>
